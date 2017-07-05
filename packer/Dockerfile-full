@@ -3,7 +3,11 @@ MAINTAINER "Matt Hooker <mhooker@hashicorp.com>"
 
 ENV PACKER_DEV=1
 
-RUN apk add --update git bash openssl
+RUN apk add --update git bash openssl python py-pip openssl ca-certificates
+RUN apk --update add --virtual build-dependencies python-dev libffi-dev openssl-dev build-base 
+RUN pip install --upgrade pip cffi awscli ansible
+RUN apk --purge -v del py-pip
+RUN rm -rf /var/cache/apk/*
 RUN go get github.com/mitchellh/gox
 RUN go get github.com/hashicorp/packer
 
